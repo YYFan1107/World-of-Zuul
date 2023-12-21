@@ -34,40 +34,70 @@ public class Game
      */
     private void createRooms()
     {
-        Room auditoriumLobby, centerWestHallway, centerEastHallway, fortGreenePlace,
-             toNorthWestEntrance, toSouthWestEntrance, auditorium, toNorthEastEntrance,
-             toSouthEastEntrance, southEliot, murral;
+        Room island1, island2, island3, island4,
+             island5, origIsland, ocean1, ocean2, 
+             ocean3, ocean4, ocean5, ocean6, ocean7, 
+             ocean8, ocean9, ocean10, ocean11, 
+             ocean12, ocean13, ocean14, ocean15, ocean16,
+             ocean17, ocean18, ocean19;
       
         // create the rooms
-        auditoriumLobby = new Room("in lobby outside the auditorium");
-        centerWestHallway = new Room("in the center west hallway");
-        centerEastHallway = new Room("in the center east hallway");
-        fortGreenePlace = new Room("outside center west on Fort Greene Place");
-        toNorthWestEntrance = new Room("looking toward the north west entrance");
-        toSouthWestEntrance = new Room("looking toard the south west entrance");
-        auditorium = new Room("Auditorium");
-        toNorthEastEntrance = new Room("looking toward the north east entrance");
-        toSouthEastEntrance = new Room("looking toward the south east entrance");
-        southEliot = new Room("outside center east on South Elliot"); 
-        murral = new Room("at the murral in the lobby");
-        auditorium = new Room("in the auditorium");
+        origIsland = new Room("On stranded island");
+        island1 = new Room("on island 1, finds sticks");
+        island2 = new Room("on island 2, finds rocks");
+        island3 = new Room("on island 3, finds plastic bottles");
+        island4 = new Room("on island 4, finds spring water");
+        island5 = new Room("on island 5, finds a bear");
+        ocean1 = new Room("open ocean");
+        ocean2 = new Room("open ocean");
+        ocean3 = new Room("open ocean");
+        ocean4 = new Room("open ocean");
+        ocean5 = new Room("open ocean");
+        ocean6 = new Room("open ocean");
+        ocean7 = new Room("open ocean");
+        ocean8 = new Room("open ocean");
+        ocean9 = new Room("open ocean");
+        ocean10 = new Room("open ocean");
+        ocean11 = new Room("open ocean");
+        ocean12 = new Room("open ocean");
+        ocean13 = new Room("open ocean");
+        ocean14 = new Room("open ocean");
+        ocean15 = new Room("open ocean");
+        ocean16 = new Room("open ocean");
+        ocean17 = new Room("open ocean");
+        ocean18 = new Room("open ocean");
+        ocean19 = new Room("open ocean");
+
         
         // initialise room exits (north, east, south, west)
-        auditoriumLobby.setExits(murral, centerEastHallway, auditorium, centerWestHallway);
-        centerWestHallway.setExits(toNorthWestEntrance, auditoriumLobby, toSouthWestEntrance, fortGreenePlace);
-        centerEastHallway.setExits(toNorthEastEntrance, southEliot, toSouthEastEntrance, auditoriumLobby);
+        origIsland.setExits(ocean6, ocean10, ocean14, ocean9);
+        island1.setExits(ocean2, ocean6, ocean9, ocean5);
+        island2.setExits(ocean5, ocean9, ocean12, null);
+        island3.setExits(ocean13, ocean18, null, ocean17);
+        island4.setExits(null, null, ocean8, ocean4);
+        island5.setExits(ocean16, null, null, ocean19);
 
-        fortGreenePlace.setExits(null, centerWestHallway, null, null);
-        toNorthWestEntrance.setExits(null, null, centerWestHallway, null);
-        toSouthWestEntrance.setExits(centerWestHallway, null, null, null);
-        auditorium.setExits(auditoriumLobby, null, null, null);
-        murral.setExits(null, null, auditoriumLobby, null);
-        southEliot.setExits(null, centerEastHallway, null, null);
-        toNorthEastEntrance.setExits(null, null, centerEastHallway, null);
-        toSouthEastEntrance.setExits(centerEastHallway, null, null, null);
-        
+        ocean1.setExits(null, ocean2, ocean5, null);
+        ocean2.setExits(null, ocean3, island1, ocean1);
+        ocean3.setExits(null, ocean4, ocean6, ocean2);
+        ocean4.setExits(null, island4, ocean7, ocean3);
+        ocean5.setExits(ocean1, island1, island2, null);
+        ocean6.setExits(ocean3, ocean7, origIsland, island1);
+        ocean7.setExits(ocean4, ocean8, ocean10, ocean6);
+        ocean8.setExits(island4, null, ocean11, ocean7);
+        ocean9.setExits(island1, origIsland, ocean13, island2);
+        ocean10.setExits(ocean7, ocean11, ocean15, origIsland);
+        ocean11.setExits(ocean8, null, ocean16, ocean10);
+        ocean12.setExits(island2, ocean13, ocean17, null);
+        ocean13.setExits(ocean9, ocean14, island3, ocean12);
+        ocean14.setExits(origIsland, ocean15, ocean18, ocean13);
+        ocean15.setExits(ocean10, ocean16, ocean19, ocean14);
+        ocean16.setExits(ocean11, null, island5, ocean15);
+        ocean17.setExits(ocean12, island3, null, null);
+        ocean18.setExits(ocean14, ocean19, null, island3);
+        ocean19.setExits(ocean15, island5, null, ocean18);
 
-        currentRoom = auditoriumLobby;  // start game outside
+        currentRoom = origIsland;  // start game outside
     }
 
     /**
@@ -152,8 +182,8 @@ public class Game
      */
     private void printHelp() 
     {
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
+        System.out.println("You are stranded. You are alone. You wander");
+        System.out.println("around at the island.");
         System.out.println();
         System.out.println("Your command words are:");
         System.out.println("   go quit help");
@@ -189,7 +219,7 @@ public class Game
         }
 
         if (nextRoom == null) {
-            System.out.println("There is no door!");
+            System.out.println("Edge of the world!");
         }
         else {
             currentRoom = nextRoom;
