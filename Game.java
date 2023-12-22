@@ -39,7 +39,7 @@ public class Game
              ocean3, ocean4, ocean5, ocean6, ocean7, 
              ocean8, ocean9, ocean10, ocean11, 
              ocean12, ocean13, ocean14, ocean15, ocean16,
-             ocean17, ocean18, ocean19;
+             ocean17, ocean18, ocean19, secretCave;
       
         // create the rooms
         origIsland = new Room("On stranded island");
@@ -48,6 +48,7 @@ public class Game
         island3 = new Room("on island 3, finds plastic bottles");
         island4 = new Room("on island 4, finds spring water");
         island5 = new Room("on island 5, finds a bear");
+        secretCave = new Room("secret cave under the surface of the island");
         ocean1 = new Room("open ocean");
         ocean2 = new Room("open ocean");
         ocean3 = new Room("open ocean");
@@ -70,32 +71,34 @@ public class Game
 
         
         // initialise room exits (north, east, south, west)
-        origIsland.setExits(ocean6, ocean10, ocean14, ocean9);
-        island1.setExits(ocean2, ocean6, ocean9, ocean5);
-        island2.setExits(ocean5, ocean9, ocean12, null);
-        island3.setExits(ocean13, ocean18, null, ocean17);
-        island4.setExits(null, null, ocean8, ocean4);
-        island5.setExits(ocean16, null, null, ocean19);
+        origIsland.setExits(ocean6, ocean10, ocean14, ocean9, null, null);
+        island1.setExits(ocean2, ocean6, ocean9, ocean5, null, null);
+        island2.setExits(ocean5, ocean9, ocean12, null, null, null);
+        island3.setExits(ocean13, ocean18, null, ocean17, null, null);
+        island4.setExits(null, null, ocean8, ocean4, null, null);
+        island5.setExits(ocean16, null, null, ocean19, null, secretCave);
+        
+        secretCave.setExits(null, null, null, null, island5, null);
 
-        ocean1.setExits(null, ocean2, ocean5, null);
-        ocean2.setExits(null, ocean3, island1, ocean1);
-        ocean3.setExits(null, ocean4, ocean6, ocean2);
-        ocean4.setExits(null, island4, ocean7, ocean3);
-        ocean5.setExits(ocean1, island1, island2, null);
-        ocean6.setExits(ocean3, ocean7, origIsland, island1);
-        ocean7.setExits(ocean4, ocean8, ocean10, ocean6);
-        ocean8.setExits(island4, null, ocean11, ocean7);
-        ocean9.setExits(island1, origIsland, ocean13, island2);
-        ocean10.setExits(ocean7, ocean11, ocean15, origIsland);
-        ocean11.setExits(ocean8, null, ocean16, ocean10);
-        ocean12.setExits(island2, ocean13, ocean17, null);
-        ocean13.setExits(ocean9, ocean14, island3, ocean12);
-        ocean14.setExits(origIsland, ocean15, ocean18, ocean13);
-        ocean15.setExits(ocean10, ocean16, ocean19, ocean14);
-        ocean16.setExits(ocean11, null, island5, ocean15);
-        ocean17.setExits(ocean12, island3, null, null);
-        ocean18.setExits(ocean14, ocean19, null, island3);
-        ocean19.setExits(ocean15, island5, null, ocean18);
+        ocean1.setExits(null, ocean2, ocean5, null, null, null);
+        ocean2.setExits(null, ocean3, island1, ocean1, null, null);
+        ocean3.setExits(null, ocean4, ocean6, ocean2, null, null);
+        ocean4.setExits(null, island4, ocean7, ocean3, null, null);
+        ocean5.setExits(ocean1, island1, island2, null, null, null);
+        ocean6.setExits(ocean3, ocean7, origIsland, island1, null, null);
+        ocean7.setExits(ocean4, ocean8, ocean10, ocean6, null, null);
+        ocean8.setExits(island4, null, ocean11, ocean7, null, null);
+        ocean9.setExits(island1, origIsland, ocean13, island2, null, null);
+        ocean10.setExits(ocean7, ocean11, ocean15, origIsland, null, null);
+        ocean11.setExits(ocean8, null, ocean16, ocean10, null, null);
+        ocean12.setExits(island2, ocean13, ocean17, null, null, null);
+        ocean13.setExits(ocean9, ocean14, island3, ocean12, null, null);
+        ocean14.setExits(origIsland, ocean15, ocean18, ocean13, null, null);
+        ocean15.setExits(ocean10, ocean16, ocean19, ocean14, null, null);
+        ocean16.setExits(ocean11, null, island5, ocean15, null, null);
+        ocean17.setExits(ocean12, island3, null, null, null, null);
+        ocean18.setExits(ocean14, ocean19, null, island3, null, null);
+        ocean19.setExits(ocean15, island5, null, ocean18, null, null);
 
         currentRoom = origIsland;  // start game outside
     }
@@ -128,20 +131,12 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
+    }
+
+    private void printLocationInfo() {
         System.out.println("You are " + currentRoom.getDescription());
         System.out.print("You can go: ");
-        if(currentRoom.northExit != null) {
-            System.out.print("north ");
-        }
-        if(currentRoom.eastExit != null) {
-            System.out.print("east ");
-        }
-        if(currentRoom.southExit != null) {
-            System.out.print("south ");
-        }
-        if(currentRoom.westExit != null) {
-            System.out.print("west ");
-        }
+        System.out.print(currentRoom.getExitString());
         System.out.println();
     }
 
@@ -205,39 +200,14 @@ public class Game
 
         // Try to leave current room.
         Room nextRoom = null;
-        if(direction.equals("north")) {
-            nextRoom = currentRoom.northExit;
-        }
-        if(direction.equals("east")) {
-            nextRoom = currentRoom.eastExit;
-        }
-        if(direction.equals("south")) {
-            nextRoom = currentRoom.southExit;
-        }
-        if(direction.equals("west")) {
-            nextRoom = currentRoom.westExit;
-        }
+        nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("Edge of the world!");
         }
         else {
             currentRoom = nextRoom;
-            System.out.println("You are " + currentRoom.getDescription());
-            System.out.print("Exits: ");
-            if(currentRoom.northExit != null) {
-                System.out.print("north ");
-            }
-            if(currentRoom.eastExit != null) {
-                System.out.print("east ");
-            }
-            if(currentRoom.southExit != null) {
-                System.out.print("south ");
-            }
-            if(currentRoom.westExit != null) {
-                System.out.print("west ");
-            }
-            System.out.println();
+            printLocationInfo();
         }
     }
 
