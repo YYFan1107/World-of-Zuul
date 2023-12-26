@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -43,10 +45,10 @@ public class Game
       
         // create the rooms
         origIsland = new Room("On stranded island");
-        island1 = new Room("on island 1, finds sticks");
-        island2 = new Room("on island 2, finds rocks");
-        island3 = new Room("on island 3, finds plastic bottles");
-        island4 = new Room("on island 4, finds spring water");
+        island1 = new Room("on island 1");
+        island2 = new Room("on island 2");
+        island3 = new Room("on island 3");
+        island4 = new Room("on island 4");
         island5 = new Room("on island 5, finds a bear");
         secretCave = new Room("secret cave under the surface of the island");
         ocean1 = new Room("open ocean");
@@ -101,6 +103,11 @@ public class Game
         ocean19.setExits(ocean15, island5, null, ocean18, null, null);
 
         currentRoom = origIsland;  // start game outside
+
+        island1.addItem(new Item("sticks", "some sticks on the ground"));
+        island2.addItem(new Item("rocks", "some rocks on the ground"));
+        island3.addItem(new Item("plastic bottles", "some plastic bottles along the shore"));
+        island4.addItem(new Item("fresh water", "a bottle of fresh water"));
     }
 
     /**
@@ -208,6 +215,30 @@ public class Game
         else {
             currentRoom = nextRoom;
             printLocationInfo();
+        }
+
+        Item designatedItem;
+        if (currentRoom.getDescription().equalsIgnoreCase("on island 1")) {
+            String designatedItemName = "sticks";
+            designatedItem = currentRoom.getItem(designatedItemName);
+        }
+        if (currentRoom.getDescription().equalsIgnoreCase("on island 2")) {
+            String designatedItemName = "rocks";
+            designatedItem = currentRoom.getItem(designatedItemName);
+        }
+        if (currentRoom.getDescription().equalsIgnoreCase("on island 3")) {
+            String designatedItemName = "plastic bottles";
+            designatedItem = currentRoom.getItem(designatedItemName);
+        }
+        if (currentRoom.getDescription().equalsIgnoreCase("on island 4")) {
+            String designatedItemName = "fresh water";
+            designatedItem = currentRoom.getItem(designatedItemName);
+        }
+
+        System.out.println(currentRoom.getItemList());
+        
+        if (currentRoom.getDescription().equalsIgnoreCase("secret cave under the surface of the island")) {
+            System.out.println("Congratulations! You have reached the secret cave.");
         }
     }
 
